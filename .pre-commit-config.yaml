@@ -1,0 +1,9 @@
+repos:
+- repo: local
+  hooks:
+  - id: generate-grpc-code-check
+    name: Check gRPC generated files
+    entry: bash -c 'check_grpc_generated_files.sh'
+    language: script
+    files: ^control_outlet\.proto\.txt$
+    pass_filenames: false

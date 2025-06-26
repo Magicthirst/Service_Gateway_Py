@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "Syncing_Battleship_gRPC_Outlet";
+
+package Syncing_Battleship;
+
+service SyncControlOutlet {
+  rpc Launch (SessionLaunchInfo) returns (NewSessionInfo);
+  rpc Welcome (WelcomeRequest) returns (WelcomeResponse);
+}
+
+message SessionLaunchInfo {
+  string hostId = 1;
+}
+
+message NewSessionInfo {
+  int32 sessionId = 1;
+  string sourceOfTruthKey = 2;
+}
+
+message WelcomeRequest {
+  int32 sessionId = 1;
+  string playerId = 2;
+}
+
+message WelcomeResponse {
+  bool success = 1;
+}

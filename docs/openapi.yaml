@@ -1,0 +1,664 @@
+openapi: 3.0.0
+info:
+  title: FastAPI
+  version: 0.1.0
+paths:
+  /hosts:
+    post:
+      summary: register
+      operationId: register_hosts_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Host'
+  /hosts/{host}/access_token:
+    get:
+      summary: login by host uuid
+      operationId: login_hosts__host__access_token_get
+      parameters:
+        - name: host
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Host
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginToken'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Not Found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /hosts/access_token/renew:
+    get:
+      summary: renew token
+      operationId: renew_hosts_access_token_renew_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginToken'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+      security:
+        - HTTPBearer: []
+  /hosts/{host}:
+    get:
+      summary: get host by uuid
+      operationId: get_hosts__host__get
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: host
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Host
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Host'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundThisOrOther'
+          description: Not Found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /hosts/{host}/only_friends:
+    put:
+      summary: set is {host} welcomes only friends
+      operationId: set_only_friends_hosts__host__only_friends_put
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: host
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Host
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Body_set_only_friends_hosts__host__only_friends_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundThisOrOther'
+          description: Not Found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /hosts/{host}/allow_nonames:
+    put:
+      summary: set is {host} welcomes nonames
+      operationId: set_allow_nonames_hosts__host__allow_nonames_put
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: host
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Host
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Body_set_allow_nonames_hosts__host__allow_nonames_put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundThisOrOther'
+          description: Not Found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /hosts/{host}/friends:
+    post:
+      summary: befriend
+      operationId: befriend_hosts__host__friends_post
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: host
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Host
+        - name: friend
+          in: query
+          required: true
+          schema:
+            type: string
+            title: Friend
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundThisOrOther'
+          description: Not Found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /hosts/{host}/friends/{former_friend}:
+    delete:
+      summary: unfriend
+      operationId: unfriend_hosts__host__friends__former_friend__delete
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: host
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Host
+        - name: former_friend
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Former Friend
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundThisOrOther'
+          description: Not Found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /hosts/{host}/banlist:
+    post:
+      summary: ban
+      operationId: ban_hosts__host__banlist_post
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: host
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Host
+        - name: banned
+          in: query
+          required: true
+          schema:
+            type: string
+            title: Banned
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundThisOrOther'
+          description: Not Found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /hosts/{host}/banlist/{banned}:
+    delete:
+      summary: unban
+      operationId: unban_hosts__host__banlist__banned__delete
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: host
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Host
+        - name: banned
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Banned
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundThisOrOther'
+          description: Not Found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /sessions:
+    post:
+      summary: launch session
+      operationId: launch_session_sessions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_launch_session_sessions_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '201':
+          description: Created
+          headers:
+            Location:
+              description: URL of Sync server on which game session is hosted
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LaunchSessionResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundThisOrOther'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+      security:
+        - HTTPBearer: []
+  /sessions/players:
+    post:
+      summary: Join a session as a player
+      operationId: join_sessions_players_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Body_join_sessions_players_post'
+        required: true
+      responses:
+        '200':
+          description: Player successfully joined the session.
+          headers:
+            Location:
+              description: URL of the Sync server where the game session is hosted.
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JoinSessionResponse'
+        '400':
+          description: Bad Request, e.g., guest already in session or invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '401':
+          description: 'Unauthorized: The provided authentication token is invalid.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '404':
+          description: >-
+            Not Found: No session found for the specified host, or guest is not
+            welcome.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '500':
+          description: 'Internal Server Error: An unexpected error occurred on the server.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '503':
+          description: >-
+            Service Unavailable: External service (hosts or sync) is
+            unreachable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+      security:
+        - HTTPBearer: []
+components:
+  schemas:
+    Body_join_sessions_players_post:
+      properties:
+        host:
+          type: string
+          title: Host
+        guest:
+          type: string
+          title: Guest
+      type: object
+      required:
+        - host
+        - guest
+      title: Body_join_sessions_players_post
+    Body_launch_session_sessions_post:
+      properties:
+        host:
+          type: string
+          title: Host
+      type: object
+      required:
+        - host
+      title: Body_launch_session_sessions_post
+    Body_set_allow_nonames_hosts__host__allow_nonames_put:
+      properties:
+        allow_nonames:
+          type: boolean
+          title: Allow Nonames
+      type: object
+      required:
+        - allow_nonames
+      title: Body_set_allow_nonames_hosts__host__allow_nonames_put
+    Body_set_only_friends_hosts__host__only_friends_put:
+      properties:
+        only_friends:
+          type: boolean
+          title: Only Friends
+      type: object
+      required:
+        - only_friends
+      title: Body_set_only_friends_hosts__host__only_friends_put
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Host:
+      properties:
+        uuid:
+          type: string
+          title: Uuid
+          default: some-host_uuid
+        only_friends:
+          type: boolean
+          title: Only Friends
+          default: true
+        allow_nonames:
+          type: boolean
+          title: Allow Nonames
+          default: false
+        friends:
+          items:
+            type: string
+          type: array
+          title: Friends
+          default:
+            - this-gui-host_uuid
+            - other-guy-host_uuid
+        banlist:
+          items:
+            type: string
+          type: array
+          title: Banlist
+          default:
+            - that-guy-host_uuid
+      type: object
+      title: Host
+    JoinSessionResponse:
+      properties:
+        session_id:
+          type: integer
+          title: Session Id
+      type: object
+      required:
+        - session_id
+      title: JoinSessionResponse
+    LaunchSessionResponse:
+      properties:
+        session_id:
+          type: integer
+          title: Session Id
+        source_of_truth_key:
+          type: string
+          title: Source Of Truth Key
+      type: object
+      required:
+        - session_id
+        - source_of_truth_key
+      title: LaunchSessionResponse
+    LoginToken:
+      properties:
+        token:
+          type: string
+          title: Token
+          default: true
+      type: object
+      title: LoginToken
+    Message:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+        - message
+      title: Message
+    NotFoundThisOrOther:
+      properties:
+        message:
+          type: string
+          enum:
+            - not found this
+            - not found other
+          title: Message
+      type: object
+      required:
+        - message
+      title: NotFoundThisOrOther
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

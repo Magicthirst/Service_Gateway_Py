@@ -1,0 +1,9 @@
+uvicorn
+attrs
+fastapi
+fastapi-decorators
+httpx
+pydantic
+grpcio
+grpcio-tools
+grpcio-status
