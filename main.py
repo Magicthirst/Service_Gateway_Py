@@ -260,17 +260,17 @@ async def launch_session(host: str = Body(embed=True), authorization: HTTPAuthor
     try:
         try:
             request = pb2.SessionLaunchInfo(hostId=host)
-            response = await sync_stub.Launch(request)
+            response = sync_stub.Launch(request)
             sessions_players[response.sessionId] = [host]
             return JSONResponse(
                 status_code=201,
                 headers={
                     'Location': sync_main_url
                 },
-                content=LaunchSessionResponse(
-                    session_id=response.sessionId,
-                    source_of_truth_key=response.sourceOfTruthKey
-                )
+                content={
+                    "session_id": response.sessionId,
+                    "source_of_truth_key": response.sourceOfTruthKey
+                }
             )
         except grpc.RpcError as e_:
             e: grpc.Call = e_
@@ -339,7 +339,7 @@ async def join(host: str = Body(embed=True), guest: str = Body(embed=True), auth
         try:
             session_id = hosts_sessions[host]
             request = pb2.WelcomeRequest(sessionId=session_id, playerId=guest)
-            response = await sync_stub.Welcome(request)
+            response = sync_stub.Welcome(request)
             return JSONResponse(
                 status_code=200,
                 headers={'Location': sync_main_url},
