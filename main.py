@@ -344,7 +344,7 @@ async def join(host: str = Body(embed=True), guest: str = Body(embed=True), auth
             return JSONResponse(
                 status_code=200,
                 headers={'Location': sync_main_url},
-                content={'session_id': response.sessionId}
+                content={'session_id': session_id}
             )
         except grpc.RpcError as e_:
             e: grpc.Call = e_
