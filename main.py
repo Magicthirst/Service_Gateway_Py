@@ -262,6 +262,7 @@ async def launch_session(host: str = Body(embed=True), authorization: HTTPAuthor
             request = pb2.SessionLaunchInfo(hostId=host)
             response = sync_stub.Launch(request)
             sessions_players[response.sessionId] = [host]
+            hosts_sessions[host] = response.sessionId
             return JSONResponse(
                 status_code=201,
                 headers={
