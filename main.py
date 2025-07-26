@@ -320,7 +320,7 @@ async def launch_session(host: str = Body(embed=True), authorization: HTTPAuthor
     }
 )
 async def join(host: str = Body(embed=True), guest: str = Body(embed=True), authorization: HTTPAuthorizationCredentials = Depends(security)):
-    if auth_err_result := await check_access(host, authorization):
+    if auth_err_result := await check_access(guest, authorization):
         return auth_err_result
 
     if host not in hosts_sessions:
